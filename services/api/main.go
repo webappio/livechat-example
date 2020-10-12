@@ -21,4 +21,5 @@ func main()  {
 	router := gin.New()
 	router.Use(middleware.Recover(), middleware.Logger())
 	api.AddRoutes(&router.RouterGroup)
+	klog.Fatal(router.Run())
 }
