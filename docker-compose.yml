@@ -3,6 +3,7 @@ version: "3.8"
 services:
   postgres:
     image: postgres:11.4-alpine
+    container_name: "postgres"
     expose:
       - 5432
     volumes:
@@ -16,7 +17,9 @@ services:
 
   web:
     image: web:latest
+    container_name: "web"
     build: ./services/web
+    stop_grace_period: "1s"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.web.loadbalancer.server.port=80"
@@ -28,6 +31,7 @@ services:
 
   api:
     image: api:latest
+    container_name: "api"
     build: ./services/api
     labels:
       - "traefik.enable=true"
