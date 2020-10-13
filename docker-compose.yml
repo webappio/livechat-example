@@ -1,9 +1,52 @@
 version: "3.8"
 
 services:
+  postgres:
+    image: postgres:11.4-alpine
+    expose:
+      - 5432
+    volumes:
+      - "/livechat-data/postgresql:/var/lib/postgresql/data/pgdata"
+    environment:
+      - "PGDATA=/var/lib/postgresql/data/pgdata"
+      - "POSTGRES_USER=postgresql"
+      - "POSTGRES_PASSWORD=postgresql"
+      - "POSTGRES_DB=livechat-example"
+    restart: on-failure
+
   web:
     image: web:latest
     build: ./services/web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.web.loadbalancer.server.port=80"
+      - "traefik.http.routers.web.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.web.entrypoints=web"
+    expose:
+      - 80
+    restart: on-failure
+
   api:
     image: api:latest
     build: ./services/api
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.api.loadbalancer.server.port=80"
+      - "traefik.http.routers.api.rule=PathPrefix(`/api/`)"
+      - "traefik.http.routers.api.entrypoints=web"
+    expose:
+      - 80
+    restart: on-failure
+
+  traefik:
+    image: "traefik:v2.3"
+    container_name: "traefik"
+    command:
+      - "--accesslog"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "8000:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"

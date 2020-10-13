@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmoiron/sqlx/reflectx"
+	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
 	"strings"
 	"time"
