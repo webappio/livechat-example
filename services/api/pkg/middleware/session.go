@@ -82,7 +82,7 @@ func GetUser(ginCtx *gin.Context) (*model.User, error) {
 
 	userUuid, ok := session.Values["uuid"]
 	if !ok || userUuid == "" {
-		return nil, errors.Wrap(err, "user has not logged in yet")
+		return nil, fmt.Errorf( "user has not logged in yet")
 	}
 
 	user := &model.User{}
@@ -90,6 +90,5 @@ func GetUser(ginCtx *gin.Context) (*model.User, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "could not get user by that uuid")
 	}
-	klog.Info("Returning non-nil user")
 	return user, nil
 }

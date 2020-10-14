@@ -6,12 +6,15 @@ export default class ProtocolHandler {
         this.dashboard = dashboard;
     }
 
+    send(message) {
+        this.ws.send(message);
+    }
 
     processMessage({type, ...data}) {
         console.log("got message: " + type);
         switch(type) {
             case "redirect-to-login":
-                window.history.pushState({}, "Login", "/login")
+                this.dashboard.setState({currPage: "/login"})
                 return
             default:
                 console.warn("unexpected message: "+type);
@@ -21,7 +24,7 @@ export default class ProtocolHandler {
     init() {
         this.ws = new WebSocket(
             (document.location.protocol === "http:" ? "ws://" : "wss://")
-            + document.location.host
+            + (document.location.host === "localhost:3000" ? "localhost:8000" : document.location.host)
             + "/api/ws"
         )
         this.ws.binaryType = "blob";

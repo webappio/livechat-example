@@ -2,7 +2,8 @@ import React from 'react';
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Redirect,
 } from "react-router-dom";
 import ReactDOM from 'react-dom';
 import './common.css';
@@ -16,9 +17,11 @@ class Index extends React.Component {
 
         this.protoHandler = new ProtocolHandler(this);
         this.state = {
+            currPage: "/",
             channels: [],
             activeUser: {},
             activeChannelUUID: "",
+            currMessage: "", //the content of the (unsent) message being written
         };
     }
 
@@ -28,16 +31,20 @@ class Index extends React.Component {
 
     render() {
         return <Router>
+            <Redirect to={this.state.currPage} />
             <Switch>
+                <Route path="/login">
+                    <Login/>
+                </Route>
                 <Route path="/">
                     <Main
                         activeUser={this.state.activeUser}
                         channels={this.state.channels}
                         currChannel={this.state.channels.filter(({uuid}) => uuid === this.state.activeChannelUUID).pop()}
+                        sendMessage={() => this.protoHandler.send({"type": "new_message", "contents": this.state.currMessage})}
+                        currMessageValue={this.state.currMessage}
+                        setCurrMessageValue={newValue => this.setState({currMessage: newValue})}
                     />
-                </Route>
-                <Route path="/login">
-                    <Login/>
                 </Route>
             </Switch>
         </Router>

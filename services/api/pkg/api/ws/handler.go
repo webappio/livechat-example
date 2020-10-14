@@ -6,6 +6,9 @@ import (
 	"github.com/layer-devops/livechat-example/services/api/pkg/middleware"
 	"github.com/layer-devops/livechat-example/services/api/pkg/model"
 	"k8s.io/klog/v2"
+	"net/http"
+	"net/url"
+	"strings"
 	"time"
 )
 
@@ -18,6 +21,24 @@ type Handler struct {
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		origin := r.Header["Origin"]
+		if len(origin) == 0 {
+			return true
+		}
+		parsedOrigin, err := url.Parse(origin[0])
+		if err != nil {
+			return false
+		}
+		if strings.EqualFold(r.Host, parsedOrigin.Host) {
+			return true
+		}
+		if strings.EqualFold(strings.Split(r.Host, ":")[0], parsedOrigin.Hostname()) {
+			return true
+		}
+		klog.Info(r.Host, parsedOrigin.Hostname())
+		return false
+	},
 }
 
 func NewForContext(ginCtx *gin.Context) {
@@ -31,7 +52,6 @@ func NewForContext(ginCtx *gin.Context) {
 
 	handler.user, err = middleware.GetUser(ginCtx)
 	if err != nil {
-		klog.Info("User is not logged in.")
 		handler.conn.SetWriteDeadline(time.Now().Add(time.Second*20))
 		handler.conn.WriteJSON(gin.H{"type": "redirect-to-login"})
 		return
