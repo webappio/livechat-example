@@ -24,7 +24,7 @@ func handleDirectMessage(toUuid string, messageIndex uint64) {
 
 }
 
-func (handler *Handler) Listen() error {
+func (handler *Handler) listenDatabase() {
 	listener := pq.NewListener(model.ConnString, time.Second, 10*time.Second, func(_ pq.ListenerEventType, err error) {
 		if err != nil {
 			klog.Error(err)
@@ -32,17 +32,29 @@ func (handler *Handler) Listen() error {
 		}
 	})
 
+	defer func() {
+		listener.Close()
+	}()
+
 	if err := listener.Listen("channels"); err != nil {
-		return err
+		klog.Error(err)
+		handler.conn.Close()
+		return
 	}
 	if err := listener.Listen("users"); err != nil {
-		return err
+		klog.Error(err)
+		handler.conn.Close()
+		return
 	}
 	if err := listener.Listen("channel_messages"); err != nil {
-		return err
+		klog.Error(err)
+		handler.conn.Close()
+		return
 	}
 	if err := listener.Listen("direct_messages"); err != nil {
-		return err
+		klog.Error(err)
+		handler.conn.Close()
+		return
 	}
 
 	for {
@@ -73,7 +85,8 @@ func (handler *Handler) Listen() error {
 				handleDirectMessage(toUserUuid, messageIndex)
 			}
 		case <-handler.done:
-			return listener.Close()
+			handler.conn.Close()
+			return
 		}
 	}
 }

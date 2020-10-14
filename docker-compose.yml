@@ -48,6 +48,8 @@ services:
     expose:
       - 80
     restart: on-failure
+    volumes:
+      - "/livechat-data/api/secret:/secret"
 
   traefik:
     image: "traefik:v2.3"

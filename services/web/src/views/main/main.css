@@ -24,7 +24,11 @@ body {
   flex: 0 0 200px;
 }
 
-.mainBody .sidebar, .mainBody .sidebar .btn {
+.mainBody .sidebar, .mainBody .sidebar .btn, header {
+  color: #80858d;
+}
+
+.mainBody .sidebar .btn.active {
   color: #adb5bd;
 }
 

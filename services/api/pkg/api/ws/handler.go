@@ -55,9 +55,15 @@ func NewForContext(ginCtx *gin.Context) {
 		handler.conn.SetWriteDeadline(time.Now().Add(time.Second*20))
 		handler.conn.WriteJSON(gin.H{"type": "redirect-to-login"})
 		return
+	} else {
+		handler.conn.SetWriteDeadline(time.Now().Add(time.Second*20))
+		handler.conn.WriteJSON(gin.H{"type": "user-info", "user": handler.user})
 	}
 
 	go handler.read()
 	go handler.write()
+	go handler.listenDatabase()
+	go handler.readDatabase()
+	ginCtx.Abort()
 	return
 }

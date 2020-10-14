@@ -11,6 +11,8 @@ import Main from './views/main/main';
 import Login from "./views/login/login";
 import ProtocolHandler from "./model/protocol_handler";
 
+window.APIHost = (document.location.host === "localhost:3000" ? "localhost:8000" : document.location.host)
+
 class Index extends React.Component {
     constructor(props) {
         super(props);
@@ -41,7 +43,15 @@ class Index extends React.Component {
                         activeUser={this.state.activeUser}
                         channels={this.state.channels}
                         currChannel={this.state.channels.filter(({uuid}) => uuid === this.state.activeChannelUUID).pop()}
-                        sendMessage={() => this.protoHandler.send({"type": "new_message", "contents": this.state.currMessage})}
+                        chooseChannel={uuid => this.setState({activeChannelUUID: uuid})}
+                        sendMessage={() => {
+                            this.protoHandler.send({
+                                "type": "new_message",
+                                "contents": this.state.currMessage,
+                                "channel_uuid": this.state.activeChannelUUID,
+                            })
+                            this.setState({currMessage: ""})
+                        }}
                         currMessageValue={this.state.currMessage}
                         setCurrMessageValue={newValue => this.setState({currMessage: newValue})}
                     />

@@ -7,7 +7,7 @@ function TextArea(props) {
                   value={props.value}
                   onKeyDown={e => {
                       if (e.key === "Enter" && e.ctrlKey) {
-                          props.setValue(props.value+"\n");
+                          props.setValue(props.value + "\n");
                       }
                   }}
                   onKeyPress={e => {
@@ -23,13 +23,14 @@ function TextArea(props) {
 }
 
 export default function main({
-                                 channels, currChannel, activeUser,
+                                 channels, currChannel, chooseChannel, activeUser,
                                  sendMessage, currMessageValue, setCurrMessageValue,
                              }) {
     return (
         <div className="mainBody d-flex flex-column">
             <header className="d-flex flex-row justify-content-end">
-                <img className="p-2 d-block" src={"/avatars/" + activeUser.uuid} alt="User Avatar"/>
+                <img className="py-2 px-3 d-block" src={window.APIHost + "/api/avatars/" + activeUser.uuid}
+                     alt={activeUser.name}/>
             </header>
             <div className="d-flex flex-row flex-grow-1">
                 <div className="sidebar py-3 d-flex flex-column">
@@ -42,14 +43,24 @@ export default function main({
                                 <i className="feather icon-plus"/>
                             </button>
                         </div>
-                        {channels.map(channel => <button key={channel.name} className="ml-3">
-                            # {channel.name}
+                        {channels.map(channel => <button
+                            key={channel.uuid}
+                            className={"btn ml-3" + (currChannel.uuid === channel.uuid ? " active" : "")}
+                            onClick={() => chooseChannel(channel.uuid)}
+                        >
+                            <span className="mr-1">#</span> {channel.name}
                         </button>)}
                     </div>
                 </div>
                 <div className="messages d-flex flex-column justify-content-between">
                     <div className="messages-list">
-
+                        <div className="channel-info-bar m-3">
+                            {!currChannel ? null : (
+                                <b>
+                                    <i className="feather icon-lock"/> {currChannel.name}
+                                </b>
+                            )}
+                        </div>
                     </div>
                     <TextArea
                         sendMessage={sendMessage}

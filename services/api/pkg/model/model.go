@@ -59,3 +59,7 @@ func Init(maxConns int) error {
 func Get(dest interface{}, query string, args ...interface{}) error {
 	return dbConn.Get(dest, query, args...)
 }
+
+func Select(dest interface{}, query string, args ...interface{}) error {
+	return dbConn.Select(dest, query, args...)
+}
