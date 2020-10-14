@@ -3,6 +3,8 @@
 set -eu -o pipefail
 
 cd public
+mkdir -p static
+cd static
 
 rm -rf feather-font-*
 curl -fSsL -o /tmp/feather-font.zip https://github.com/AT-UI/feather-font/archive/master.zip

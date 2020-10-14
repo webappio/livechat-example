@@ -10,7 +10,6 @@ func (handler *Handler) write() {
 	defer func() {
 		ticker.Stop()
 		handler.conn.Close()
-		close(handler.done)
 	}()
 	for {
 		select {

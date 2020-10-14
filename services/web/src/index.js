@@ -16,7 +16,9 @@ class Index extends React.Component {
 
         this.protoHandler = new ProtocolHandler(this);
         this.state = {
-            channels: {}
+            channels: [],
+            activeUser: {},
+            activeChannelUUID: "",
         };
     }
 
@@ -28,7 +30,11 @@ class Index extends React.Component {
         return <Router>
             <Switch>
                 <Route path="/">
-                    <Main/>
+                    <Main
+                        activeUser={this.state.activeUser}
+                        channels={this.state.channels}
+                        currChannel={this.state.channels.filter(({uuid}) => uuid === this.state.activeChannelUUID).pop()}
+                    />
                 </Route>
                 <Route path="/login">
                     <Login/>

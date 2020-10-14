@@ -19,7 +19,7 @@ func main()  {
 	}
 
 	router := gin.New()
-	router.Use(middleware.Recover(), middleware.Logger())
+	router.Use(middleware.Recover(), middleware.Logger(), middleware.Session())
 	api.AddRoutes(&router.RouterGroup)
 	klog.Fatal(router.Run())
 }

@@ -55,3 +55,7 @@ func Init(maxConns int) error {
 	dbConn.Mapper = reflectx.NewMapperFunc("db", toLowerPothole)
 	return nil
 }
+
+func Get(dest interface{}, query string, args ...interface{}) error {
+	return dbConn.Get(dest, query, args...)
+}

@@ -4,6 +4,7 @@ CREATE TABLE channels(
     uuid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 
     name text UNIQUE NOT NULL,
+    topic text NOT NULL,
     description text NOT NULL
 );
 

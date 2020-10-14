@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"k8s.io/klog/v2"
-	"runtime/debug"
 	"time"
 )
 
@@ -14,8 +14,7 @@ func Recover() gin.HandlerFunc {
 			if err == nil {
 				return
 			}
-			klog.ErrorDepth(2, err)
-			klog.Error(debug.Stack())
+			klog.ErrorDepth(2, fmt.Sprintf("%+v", err))
 		}()
 		ginCtx.Next()
 	}

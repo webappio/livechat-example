@@ -30,5 +30,5 @@ RUN npm install -g http-server-spa
 
 WORKDIR /app
 COPY --from=build /app/build/ .
-RUN cp -a /tmp/download/public/* ./static
+RUN cp -a /tmp/download/public/static/* ./static/
 CMD ["http-server-spa", ".", "index.html", "80"]
