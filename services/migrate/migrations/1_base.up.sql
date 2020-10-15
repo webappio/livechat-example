@@ -60,6 +60,7 @@ CREATE TABLE channel_messages(
 
     index int NOT NULL,
     text text NOT NULL,
+    time timestamp NOT NULL DEFAULT NOW(),
 
     PRIMARY KEY (channel_uuid, index)
 );

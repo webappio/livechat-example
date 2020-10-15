@@ -60,6 +60,11 @@ func Get(dest interface{}, query string, args ...interface{}) error {
 	return dbConn.Get(dest, query, args...)
 }
 
+func Exec(query string, args ...interface{}) error {
+	_, err := dbConn.Exec(query, args...)
+	return err
+}
+
 func Select(dest interface{}, query string, args ...interface{}) error {
 	return dbConn.Select(dest, query, args...)
 }

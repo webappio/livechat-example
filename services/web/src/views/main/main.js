@@ -2,7 +2,7 @@ import React from 'react';
 import './main.css';
 
 function TextArea(props) {
-    return <div className="message-area-wrapper m-3">
+    return <div className="message-area-wrapper m-2 p-2">
         <textarea className="message-area"
                   value={props.value}
                   onKeyDown={e => {
@@ -23,13 +23,18 @@ function TextArea(props) {
 }
 
 export default function main({
-                                 channels, currChannel, chooseChannel, activeUser,
-                                 sendMessage, currMessageValue, setCurrMessageValue,
+                                 channels, currChannel, chooseChannel,
+                                 activeUserUUID, users,
+                                 messages, sendMessage,
+                                 currMessageValue, setCurrMessageValue,
                              }) {
+    let activeUser = users[activeUserUUID] || {};
     return (
         <div className="mainBody d-flex flex-column">
-            <header className="d-flex flex-row justify-content-end">
-                <img className="py-2 px-3 d-block" src={window.APIHost + "/api/avatars/" + activeUser.uuid}
+            <header className="d-flex flex-row justify-content-between">
+                <img src="/logo512.png" className="navbar-brand mx-2 py-2" alt="" />
+                <img className="py-2 px-3 d-block"
+                     src={window.APIHost + "/api/avatars/" + activeUser.uuid}
                      alt={activeUser.name}/>
             </header>
             <div className="d-flex flex-row flex-grow-1">
@@ -53,14 +58,25 @@ export default function main({
                     </div>
                 </div>
                 <div className="messages d-flex flex-column justify-content-between">
-                    <div className="messages-list">
-                        <div className="channel-info-bar m-3">
-                            {!currChannel ? null : (
-                                <b>
-                                    <i className="feather icon-lock"/> {currChannel.name}
-                                </b>
-                            )}
-                        </div>
+                    <div>
+                        {!currChannel ? null : (
+                            <div>
+                                <div className="channel-info-bar m-3">
+                                    <b>
+                                        <i className="feather icon-lock"/> {currChannel.name}
+                                    </b>
+                                </div>
+                                <div className="messages-list d-flex m-3 flex-grow-0 flex-shrink-0">
+                                    <div className="flex-grow-0 flex-shrink-0">
+                                        {((messages && messages[currChannel.uuid]) || []).map(message => <div className="d-flex flex-column">
+                                            <b>{(users[message.user_uuid] || {}).name} {new Date(message.time).toLocaleTimeString()}</b>
+
+                                            {message.text}
+                                        </div>)}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <TextArea
                         sendMessage={sendMessage}

@@ -21,6 +21,7 @@ services:
     build: ./services/migrate
     stop_grace_period: "1s"
     command: ["up"]
+    restart: on-failure
 
   web:
     image: web:latest

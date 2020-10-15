@@ -3,6 +3,7 @@ package ws
 import (
 	"encoding/json"
 	"github.com/gorilla/websocket"
+	"github.com/layer-devops/livechat-example/services/api/pkg/model"
 	"k8s.io/klog/v2"
 	"time"
 )
@@ -13,9 +14,21 @@ func (handler *Handler) handleContentMessage(message []byte) {
 		Contents string `json:"contents"`
 		ChannelUUID string `json:"channel_uuid"`
 	}
+
 	err := json.Unmarshal(message, &contentMessage)
 	if err != nil {
 		klog.Error("Invalid content message: ", string(message))
+		return
+	}
+
+	err = model.Exec(`
+INSERT INTO channel_messages(channel_uuid, user_uuid, index, text)
+VALUES($1, $2, (
+	SELECT COALESCE(MAX(index)+1, 1)
+	FROM channel_messages WHERE channel_uuid=$1
+), $3)`, contentMessage.ChannelUUID, handler.user.UUID, contentMessage.Contents)
+	if err != nil {
+		klog.Error("Could not insert channel message: ", err)
 		return
 	}
 }

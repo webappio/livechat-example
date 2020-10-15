@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 type Handler struct {
@@ -52,16 +51,14 @@ func NewForContext(ginCtx *gin.Context) {
 
 	handler.user, err = middleware.GetUser(ginCtx)
 	if err != nil {
-		handler.conn.SetWriteDeadline(time.Now().Add(time.Second*20))
-		handler.conn.WriteJSON(gin.H{"type": "redirect-to-login"})
+		handler.write(gin.H{"type": "redirect-to-login"})
 		return
 	} else {
-		handler.conn.SetWriteDeadline(time.Now().Add(time.Second*20))
-		handler.conn.WriteJSON(gin.H{"type": "user-info", "user": handler.user})
+		handler.write(gin.H{"type": "user-info", "uuid": handler.user.UUID})
 	}
 
 	go handler.read()
-	go handler.write()
+	go handler.writePings()
 	go handler.listenDatabase()
 	go handler.readDatabase()
 	ginCtx.Abort()

@@ -21,6 +21,7 @@ class Index extends React.Component {
         this.state = {
             currPage: "/",
             channels: [],
+            users: {},
             activeUser: {},
             activeChannelUUID: "",
             currMessage: "", //the content of the (unsent) message being written
@@ -40,8 +41,10 @@ class Index extends React.Component {
                 </Route>
                 <Route path="/">
                     <Main
-                        activeUser={this.state.activeUser}
+                        activeUserUUID={this.state.activeUserUUID}
+                        users={this.state.users}
                         channels={this.state.channels}
+                        messages={this.state.messages}
                         currChannel={this.state.channels.filter(({uuid}) => uuid === this.state.activeChannelUUID).pop()}
                         chooseChannel={uuid => this.setState({activeChannelUUID: uuid})}
                         sendMessage={() => {

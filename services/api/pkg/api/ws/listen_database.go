@@ -8,20 +8,20 @@ import (
 	"time"
 )
 
-func handleChannelChange(uuid string) {
-
+func (handler *Handler) handleChannelChange(uuid string) {
+	handler.readDatabase()
 }
 
-func handleUserChange(uuid string) {
-
+func (handler *Handler) handleUserChange(uuid string) {
+	handler.readDatabase()
 }
 
-func handleChannelMessage(channelUuid string, messageIndex uint64) {
-
+func (handler *Handler) handleChannelMessage(channelUuid string, messageIndex uint64) {
+	handler.readDatabase()
 }
 
-func handleDirectMessage(toUuid string, messageIndex uint64) {
-
+func (handler *Handler) handleDirectMessage(toUuid string, messageIndex uint64) {
+	handler.readDatabase()
 }
 
 func (handler *Handler) listenDatabase() {
@@ -62,18 +62,18 @@ func (handler *Handler) listenDatabase() {
 		case event := <-listener.Notify:
 			switch event.Channel {
 			case "channels":
-				handleChannelChange(event.Extra)
+				handler.handleChannelChange(event.Extra)
 			case "users":
-				handleUserChange(event.Extra)
+				handler.handleUserChange(event.Extra)
 			case "channel_messages":
 				var channelUuid string
 				var messageIndex uint64
-				_, err := fmt.Sscanf(event.Extra, "%s,%d", &channelUuid, &messageIndex)
-				if err != nil {
-					klog.Error("invalid channel message data from trigger: ", event.Extra)
-					continue
-				}
-				handleChannelMessage(channelUuid, messageIndex)
+				//_, err := fmt.Sscanf(event.Extra, "%s,%d", &channelUuid, &messageIndex)
+				//if err != nil {
+				//	klog.Error("invalid channel message data from trigger: ", event.Extra)
+				//	continue
+				//}
+				handler.handleChannelMessage(channelUuid, messageIndex)
 			case "direct_messages":
 				var toUserUuid string
 				var messageIndex uint64
@@ -82,7 +82,7 @@ func (handler *Handler) listenDatabase() {
 					klog.Error("invalid channel message data from trigger: ", event.Extra)
 					continue
 				}
-				handleDirectMessage(toUserUuid, messageIndex)
+				handler.handleDirectMessage(toUserUuid, messageIndex)
 			}
 		case <-handler.done:
 			handler.conn.Close()
