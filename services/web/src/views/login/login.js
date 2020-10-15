@@ -16,7 +16,7 @@ export default function Login(props) {
                         <input type="text" className="form-control" id="login-name" name="name" placeholder="Your Name" />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="login-name">Password</label>
+                        <label htmlFor="login-password">Password</label>
                         <input type="password" className="form-control" id="login-password" name="password" placeholder="Your Password" />
                     </div>
                     <div className="form-group">

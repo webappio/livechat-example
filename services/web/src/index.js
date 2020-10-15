@@ -57,6 +57,13 @@ class Index extends React.Component {
                         }}
                         currMessageValue={this.state.currMessage}
                         setCurrMessageValue={newValue => this.setState({currMessage: newValue})}
+                        onChannelCreate={({name, description}) => {
+                            this.protoHandler.send({
+                                "type": "new_channel",
+                                "name": name,
+                                "description": description,
+                            })
+                        }}
                     />
                 </Route>
             </Switch>

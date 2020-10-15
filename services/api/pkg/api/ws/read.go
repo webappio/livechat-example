@@ -10,8 +10,8 @@ import (
 
 func (handler *Handler) handleContentMessage(message []byte) {
 	var contentMessage struct {
-		Type string `json:"type"`
-		Contents string `json:"contents"`
+		Type        string `json:"type"`
+		Contents    string `json:"contents"`
 		ChannelUUID string `json:"channel_uuid"`
 	}
 
@@ -33,6 +33,26 @@ VALUES($1, $2, (
 	}
 }
 
+func (handler *Handler) handleNewChannelMessage(message []byte) {
+	var contentMessage struct {
+		Type        string `json:"type"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+	}
+
+	err := json.Unmarshal(message, &contentMessage)
+	if err != nil {
+		klog.Error("Invalid content message: ", string(message))
+		return
+	}
+
+	err = model.Exec("INSERT INTO channels(name, topic, description) VALUES ($1, '', $2)", contentMessage.Name, contentMessage.Description)
+	if err != nil {
+		klog.Error(err)
+		return
+	}
+}
+
 func (handler *Handler) handleMessage(message []byte) {
 	var typer struct {
 		Type string `json:"type"`
@@ -46,6 +66,8 @@ func (handler *Handler) handleMessage(message []byte) {
 	switch typer.Type {
 	case "new_message":
 		handler.handleContentMessage(message)
+	case "new_channel":
+		handler.handleNewChannelMessage(message)
 	}
 }
 
@@ -55,9 +77,9 @@ func (handler *Handler) read() {
 		close(handler.done)
 	}()
 	handler.conn.SetReadLimit(4096)
-	handler.conn.SetReadDeadline(time.Now().Add(time.Second*60))
+	handler.conn.SetReadDeadline(time.Now().Add(time.Second * 60))
 	handler.conn.SetPongHandler(func(string) error {
-		return handler.conn.SetReadDeadline(time.Now().Add(time.Second*60))
+		return handler.conn.SetReadDeadline(time.Now().Add(time.Second * 60))
 	})
 	for {
 		_, msg, err := handler.conn.ReadMessage()
