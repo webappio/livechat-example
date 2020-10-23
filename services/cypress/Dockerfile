@@ -4,10 +4,9 @@ RUN apt-get update && \
     systemd libnss3 libxss1 libasound2 libxtst6 xauth xvfb curl -y
 RUN curl -fSsL https://deb.nodesource.com/setup_12.x | bash
 RUN apt-get install nodejs -y
-RUN npm install cypress
-RUN /node_modules/.bin/cypress install
-RUN /node_modules/.bin/cypress verify
-RUN npm install http-server
+RUN npm install -g cypress http-server --unsafe-perm --silent
+RUN cypress install
+RUN cypress verify
 COPY . /app
 WORKDIR /app
-CMD ["/node_modules/.bin/http-server", "-p", "80", "-i", "false"]
+CMD ["http-server", "-p", "80", "-i", "false"]
