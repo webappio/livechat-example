@@ -8,5 +8,5 @@ RUN npm install cypress
 RUN /node_modules/.bin/cypress verify
 RUN npm install http-server
 COPY . /app
-WORKDIR /app/public
+WORKDIR /app
 CMD ["/node_modules/.bin/http-server", "-p", "80", "-i", "false"]

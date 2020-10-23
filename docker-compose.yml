@@ -70,3 +70,5 @@ services:
     build: ./services/cypress
     ports:
       - "9000:80"
+    volumes:
+      - "./services/cypress/tests:/app/tests:ro"
