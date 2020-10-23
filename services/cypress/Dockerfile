@@ -5,6 +5,7 @@ RUN apt-get update && \
 RUN curl -fSsL https://deb.nodesource.com/setup_12.x | bash
 RUN apt-get install nodejs -y
 RUN npm install cypress
+RUN /node_modules/.bin/cypress install
 RUN /node_modules/.bin/cypress verify
 RUN npm install http-server
 COPY . /app

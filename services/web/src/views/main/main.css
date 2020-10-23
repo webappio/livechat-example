@@ -45,7 +45,7 @@ body {
   flex: 1 1 auto;
 }
 
-.messages-list {
+.messages-list-container {
   max-height: calc(100vh - 210px);
   overflow-y: auto;
 }

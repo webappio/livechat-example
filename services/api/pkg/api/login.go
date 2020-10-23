@@ -20,8 +20,10 @@ func AddLoginRoutes(rg *gin.RouterGroup) {
 
 		redirectDest := "/"
 		referer, err := url.Parse(ginCtx.Request.Header.Get("Referer"))
-		if err == nil {
+		if err == nil && referer.Scheme != "" {
 			redirectDest = referer.Scheme+"://"+referer.Host
+		} else {
+			redirectDest = "//"
 		}
 
 		if name == "" || password == "" {

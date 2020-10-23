@@ -137,13 +137,12 @@ export default class main extends React.Component {
                                             <i className="feather icon-lock"/> {currChannel.name}
                                         </b>
                                     </div>
-                                    <div className="messages-list d-flex m-3 flex-grow-0 flex-shrink-0">
-                                        <div className="flex-grow-0 flex-shrink-0">
+                                    <div className="messages-list-container d-flex m-3 flex-grow-0 flex-shrink-0">
+                                        <div className="messages-list flex-grow-0 flex-shrink-0">
                                             {((messages && messages[currChannel.uuid]) || []).map(message => <div
-                                                className="d-flex flex-column">
-                                                <b>{(users[message.user_uuid] || {}).name} {new Date(message.time).toLocaleTimeString()}</b>
-
-                                                {message.text}
+                                                className="d-flex flex-column message-wrapper">
+                                                <b className="message-author">{(users[message.user_uuid] || {}).name} {new Date(message.time).toLocaleTimeString()}</b>
+                                                <div className="message-text">{message.text}</div>
                                             </div>)}
                                         </div>
                                     </div>
