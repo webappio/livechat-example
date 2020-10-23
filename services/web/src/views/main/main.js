@@ -98,7 +98,10 @@ export default class main extends React.Component {
         return (
             <div className="mainBody d-flex flex-column">
                 <header className="d-flex flex-row justify-content-between">
-                    <img src="/logo512.png" className="navbar-brand mx-2 py-2" alt=""/>
+                    <div>
+                        <img src="/logo512.png" className="navbar-brand mx-2 py-2" alt=""/>
+                        livechat-example
+                    </div>
                     <img className="py-2 px-3 d-block"
                          src={window.APIHost + "/api/avatars/" + activeUser.uuid}
                          alt={activeUser.name}/>
