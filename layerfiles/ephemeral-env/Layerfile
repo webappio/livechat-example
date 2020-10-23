@@ -1,0 +1,3 @@
+FROM /layerfiles/base
+
+EXPOSE WEBSITE localhost:8000

@@ -64,3 +64,9 @@ services:
       - "8000:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  cypress:
+    image: cypress:latest
+    build: ./services/cypress
+    ports:
+      - "9000:80"
