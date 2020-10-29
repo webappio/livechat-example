@@ -13,15 +13,15 @@ docker-compose build --parallel --progress=plain
 # clear unused docker data to avoid running out of disk over time
 if [ -n "${old_images}" ]; then
   echo "Deleting old images..."
-  docker rmi -f ${old_images}
+  docker rmi -f ${old_images} || true
 fi
 
 export IMAGE_TAG=$(git describe --tags --always)
 
-BUILT_IMAGES="$(docker images | awk '{print $1}' | tail -n +2 | grep -v '<none>' | sort | uniq)"
+BUILT_IMAGES="$(docker images | awk '{print $1 ":" $2}' | tail -n +2 | grep -v '<none>' | sort | uniq)"
 PUSH_JOBS=()
 for img in $BUILT_IMAGES; do
-  shortimg="$(echo $img | awk -F/ '{print $NF}')"
+  shortimg="$(echo $img | awk -F/ '{print $NF}' | awk -F: '{print $1}')"
   docker tag $img $REGISTRY/$shortimg:$IMAGE_TAG
   docker push $REGISTRY/$shortimg:$IMAGE_TAG&
   PUSH_JOBS+=($!)
@@ -42,5 +42,3 @@ echo "Waiting for push jobs to complete..."
 for job in ${PUSH_JOBS[@]}; do
   wait $job
 done
-
-wait $PUSH_JOB
