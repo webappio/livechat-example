@@ -3,7 +3,7 @@
 set -eu -o pipefail
 
 # store old images for removal at end (to avoid running out of disk)
-old_images="$(docker ps -aq)"
+old_images="$(docker images -aq | sort | uniq)"
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_BUILDKIT=1
