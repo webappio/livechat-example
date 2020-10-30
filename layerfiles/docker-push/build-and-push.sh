@@ -3,7 +3,7 @@
 set -eu -o pipefail
 
 # store old images for removal at end (to avoid running out of disk)
-old_images="$(docker ps -aq)"
+old_images="$(docker images -a | tail -n +2 | grep -v '<none>' | awk '{print $1 ":" $2}' | sort | uniq)"
 
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_BUILDKIT=1
@@ -14,6 +14,8 @@ docker-compose build --parallel --progress=plain
 if [ -n "${old_images}" ]; then
   echo "Deleting old images..."
   docker rmi -f ${old_images} || true
+  docker image prune --force
+  docker builder prune --force --keep-storage=5G
 fi
 
 export IMAGE_TAG=$(git describe --tags --always)
