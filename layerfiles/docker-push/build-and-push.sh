@@ -18,7 +18,7 @@ fi
 
 export IMAGE_TAG=$(git describe --tags --always)
 
-BUILT_IMAGES="$(docker images | awk '{print $1 ":" $2}' | tail -n +2 | grep -v '<none>' | sort | uniq)"
+BUILT_IMAGES="$(docker images | awk '{print $1 ":" $2}' | tail -n +2 | grep -v '<none>' | sort | uniq || true)"
 PUSH_JOBS=()
 for img in $BUILT_IMAGES; do
   shortimg="$(echo $img | awk -F/ '{print $NF}' | awk -F: '{print $1}')"
