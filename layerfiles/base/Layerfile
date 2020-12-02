@@ -16,3 +16,5 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-c
 COPY / /root
 
 RUN REPEATABLE docker-compose up -d --build --force-recreate --remove-orphans && sleep 5
+
+EXPOSE WEBSITE localhost:80
