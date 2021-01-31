@@ -8,5 +8,5 @@ RUN npm install -g cypress http-server --unsafe-perm --silent
 RUN cypress install
 RUN cypress verify
 COPY . /app
-WORKDIR /app/cypress/videos
+WORKDIR /app/public/cypress/videos
 CMD ["http-server", "-p", "80", "-i", "false"]
