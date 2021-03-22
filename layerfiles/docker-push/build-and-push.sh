@@ -19,12 +19,12 @@ fi
 export IMAGE_TAG=$(git describe --tags --always)
 
 BUILT_IMAGES="$(docker images | awk '{print $1 ":" $2}' | tail -n +2 | grep -v '<none>' | sort | uniq || true)"
-PUSH_JOBS=()
+# PUSH_JOBS=()
 for img in $BUILT_IMAGES; do
   shortimg="$(echo $img | awk -F/ '{print $NF}' | awk -F: '{print $1}')"
   docker tag $img $REGISTRY/$shortimg:$IMAGE_TAG
-  docker push $REGISTRY/$shortimg:$IMAGE_TAG&
-  PUSH_JOBS+=($!)
+  # docker push $REGISTRY/$shortimg:$IMAGE_TAG&
+  # PUSH_JOBS+=($!)
 done
 
 for i in {1..2}; do
@@ -38,7 +38,8 @@ for i in {1..2}; do
   timeout 10 docker builder prune --keep-storage 10G --force || true
 done
 
-echo "Waiting for push jobs to complete..."
-for job in ${PUSH_JOBS[@]}; do
-  wait $job
-done
+# echo "Waiting for push jobs to complete..."
+# for job in ${PUSH_JOBS[@]}; do
+#   wait $job
+# done
+echo "Done!"
