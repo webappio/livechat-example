@@ -67,6 +67,7 @@ services:
 
   cypress:
     image: cypress:latest
+    ipc: host
     build: ./services/cypress
     ports:
       - "9000:80"
