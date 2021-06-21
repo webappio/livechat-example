@@ -16,17 +16,17 @@ body {
 }
 
 .mainBody header {
-  background: #0c5db8;
+  background: #0d5db8;
 }
 
 .mainBody .sidebar {
-  background: #1c4784;
+  background: #1d4784;
   height: auto;
   flex: 0 0 200px;
 }
 
 .mainBody .sidebar, .mainBody .sidebar .btn {
-  color: #80858d;
+  color: #8d858d;
 }
 
 header {
@@ -34,7 +34,7 @@ header {
 }
 
 .mainBody .sidebar .btn.active {
-  color: #adb5bd;
+  color: #acb5bd;
 }
 
 .mainBody .sidebar .btn {
