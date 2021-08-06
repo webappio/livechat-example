@@ -6,7 +6,7 @@ RUN apt-get update && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" && \
     apt-get update && \
-    apt install docker-ce awscli
+    apt install docker-ce
 
 # install docker compose
 RUN curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
@@ -14,19 +14,8 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-c
 
 # copy the root (i.e., repository root) to /root in the runner
 COPY / /root
-COPY build-and-push.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/build-and-push.sh
 
-# TODO: log in to docker hub
-# See https://layerci.com/docs/advanced-workflows#logging-in-to-docker to learn how to log in to docker
+RUN REPEATABLE docker-compose up -d --build --force-recreate --remove-orphans && sleep 5
 
-# TODO: replace REGISTRY= with your registry destination
-RUN REPEATABLE \
-    export REGISTRY="localhost:26612" && \
-    build-and-push.sh
+EXPOSE WEBSITE localhost:8000
 
-BUTTON Deploy this pipeline
-
-RUN echo "For AWS the command might look like this:"
-RUN echo awscli deploy --template-file my-file.yaml
-RUN echo "Note that these commands only run if you click the button on the LayerCI dashboard."
