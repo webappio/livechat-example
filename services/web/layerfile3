@@ -1,3 +1,3 @@
 FROM /layerfile1
 
-EXPOSE WEBSITE https://localhost :443
+EXPOSE WEBSITE https://localhost :80
