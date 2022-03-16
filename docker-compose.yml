@@ -1,5 +1,6 @@
 version: "3.8"
 
+
 services:
   postgresql:
     image: postgres:11.4-alpine
