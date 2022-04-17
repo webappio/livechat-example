@@ -13,3 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker-compose build
+    - name: Run docker services
+      run: docker-compose up -d
+    - name: Run tests
+      run: docker-compose exec cypress bash /app/run_tests.sh
