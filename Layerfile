@@ -19,7 +19,7 @@ RUN docker-compose up -d postgresql && docker-compose pull
 
 RUN REPEATABLE docker-compose build --parallel
 RUN docker-compose up -d && \
-    timeout 30 bash -c 'while ! curl -fSsL localhost:8000; do sleep 1; done'
+    timeout 30 bash -c 'while ! curl -fSsL localhost:8000 >/dev/null; do sleep 1; done' && sleep 2
 
 RUN docker-compose exec cypress bash /app/run_tests.sh
 

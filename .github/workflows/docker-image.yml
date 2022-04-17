@@ -16,6 +16,6 @@ jobs:
     - name: Run docker services
       run: docker-compose up -d
     - name: Wait for services to be up
-      run: timeout 30 bash -c 'while ! curl -fSsL localhost:8000; do sleep 1; done'
+      run: timeout 30 bash -c 'while ! curl -fSsL localhost:8000 >/dev/null; do sleep 1; done' && sleep 2
     - name: Run tests
       run: docker-compose exec -T cypress bash /app/run_tests.sh
