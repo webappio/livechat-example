@@ -15,7 +15,7 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-c
 # copy the root (i.e., repository root) to /root in the runner
 COPY / /root
 
-RUN docker-compose up -d postgresql
+RUN docker-compose up -d postgresql && docker-compose pull
 
 RUN REPEATABLE docker-compose build --parallel
 RUN docker-compose up -d && \
