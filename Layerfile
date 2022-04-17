@@ -17,8 +17,8 @@ RUN docker-compose up -d postgres
 # copy the root (i.e., repository root) to /root in the runner
 COPY / /root
 
-RUN docker-compose build --parallel
-RUN REPEATABLE docker-compose up -d && sleep 5
+RUN REPEATABLE docker-compose build --parallel
+RUN docker-compose up -d
 
-EXPOSE WEBSITE localhost:8000
+RUN docker-compose exec cypress bash /app/run_tests.sh
 
