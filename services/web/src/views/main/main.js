@@ -82,7 +82,7 @@ export default class main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            createChannelModelOpen: false,
+            createChannelModelOpen: true,
         }
     }
 
