@@ -15,7 +15,12 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-c
 # copy the root (i.e., repository root) to /root in the runner
 COPY / /root
 
-RUN REPEATABLE docker-compose up -d --build --force-recreate --remove-orphans && sleep 5
+RUN REPEATABLE docker-compose build --parallel
+RUN docker-compose up -d
 
+# TODO: change port to whatever is configured in your docker-compose.yml
 EXPOSE WEBSITE localhost:8000
+
+RUN docker - compose exec cypress bash /app/run_tests.sh
+
 
