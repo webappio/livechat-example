@@ -1,0 +1,4 @@
+FROM /Layerfile
+
+SPLIT 5
+RUN echo $SPLIT

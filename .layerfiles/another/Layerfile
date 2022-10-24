@@ -1,0 +1,4 @@
+FROM /Layerfile
+
+RUN echo 'this is another workflow'
+RUN docker ps
