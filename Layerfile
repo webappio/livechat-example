@@ -31,7 +31,7 @@ COPY . /app
 WORKDIR /app/public/cypress/videos
 CMD ["http-server", "-p", "80", "-i", "false"]
 
-RUN docker-compose exec cypress bash /app/run_tests.sh
+RUN docker-compose exec cypress bash /root/services/cypress/run_tests.sh
 
 
 EXPOSE WEBSITE localhost:8000
