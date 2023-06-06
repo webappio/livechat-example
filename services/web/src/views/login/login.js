@@ -12,7 +12,7 @@ export default function Login(props) {
                 <h1>Login to the Livechat Example</h1>
                 <form action={"//"+window.APIHost+"/api/login"} method="post">
                     <div className="form-group">
-                        <label htmlFor="login-name">Your name</label>
+                        <label htmlFor="login-name">Your name (changed) </label>
                         <input type="text" className="form-control" id="login-name" name="name" placeholder="Your Name" />
                     </div>
                     <div className="form-group">
