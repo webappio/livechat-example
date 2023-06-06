@@ -9,7 +9,7 @@ export default function Login(props) {
         </div>
         <div className="d-flex flex-column align-items-center justify-content-center w-100 h-auto">
             <div>
-                <h1>Login to the Livechat Example</h1>
+                <h1>Login to the Livechat Example 123</h1>
                 <form action={"//"+window.APIHost+"/api/login"} method="post">
                     <div className="form-group">
                         <label htmlFor="login-name">Your name (change for testing) </label>
