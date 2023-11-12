@@ -42,7 +42,7 @@ header {
 }
 
 .mainBody .sidebar .btn:hover {
-  color: #fff;
+  color: red;
 }
 
 .messages {
