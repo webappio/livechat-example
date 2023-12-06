@@ -26,11 +26,11 @@ body {
 }
 
 .mainBody .sidebar, .mainBody .sidebar .btn {
-  color: #80858d;
+  color: #80856d;
 }
 
 header {
-  color: #fefefe;
+  color: #fefffe;
 }
 
 .mainBody .sidebar .btn.active {
